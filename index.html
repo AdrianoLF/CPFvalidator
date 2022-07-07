@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelo</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <img src="" alt="" class="">
+  <section class="container">
+    <h1>Validar CPF </h1>
+    <p>
+      Para saber se um CPF realmente existe e qual é a situação dele, é preciso consultar o CPF na Receita
+      Federal. O Validador de CPF da Receita Federal vai indicar a situação do CPF, além de dados do dono do CPF. Porém,
+      aqui no meu sistema você pode checar se ao menos os algarismos do seu CPF são válidos.<br>
+      <p><strong style="color: rgb(47, 240, 9);">LEMBRETE:</strong><strong>DÍGITOS DO CPF SÃO OS DOIS ÚLTIMOS NÚMEROS</strong></p>
+    </p>
+    <form class="form">
+      <label>Insira o CPF (somente números)</label>
+      <input type="number" name="cpf" id="cpf" placeholder="Exemplo: 12345678912" value="" maxlength="11">
+      <button onclick="naoAtt()" title="VERIFICAR CPF">ENVIAR</button>
+    </form>
+    <div class="answer"></div>
+  </section>
+  <script src="./js/js.js"></script>
+</body>
+
+</html>
