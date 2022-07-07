@@ -44,7 +44,6 @@ function valorFormulaMatematica(soma) {
 }
 
 function validaCpf(cpf) {
-    console.log(1)
     const div = document.querySelector('.answer');
 
     const cpfLimpo = cpf.replace([/\D+/g, '-', '.'], '');//Removendo todo caractere que não é um número
