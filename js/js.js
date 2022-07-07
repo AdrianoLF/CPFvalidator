@@ -1,9 +1,12 @@
+//Função para trasnformar a string que vai vir do CPF em array,
+// limitar o tamanho do array, remover 2 ultimos valores
 function fazendoSlice(cpf) {
     const cpf11 = cpf.split('')
     const cpf9 = cpf11.slice(0, -2)
     return cpf9;
 }
 
+//Transformando a string inicial para array de 9 números
 function array9num(cpf) {
     const cpf11 = cpf.split('')
     const cpf9 = cpf11.slice(0, -2)
@@ -15,17 +18,21 @@ function array9num(cpf) {
         array9num.push(cada)
     }
     return array9num;
-
 }
+
+//Função que multiplica todos valores do array 1,
+//Multiplicarei o array 'multiplicarA1' pelo array que vou obter da captação da string cpf
 function multiplicarA1(v1) {
-    const multiplicarA1 = [10, 9, 8, 7, 6, 5, 4, 3, 2];
+    const multiplicarA1 = [10, 9, 8, 7, 6, 5, 4, 3, 2];//Const com valores fixos, onde cada index vai multiplicar cada index do outro array
     const arrayMultiplicacaoDigit1 = []
     for (let i = 0; i <= 8; i++) {
         let valor = v1[i] * multiplicarA1[i];
-        arrayMultiplicacaoDigit1.push(valor);
+        arrayMultiplicacaoDigit1.push(valor);//Cada valor desse produto será inserido em um array chamado 'arrayMultiplicacaoDigit1'
     }
     return arrayMultiplicacaoDigit1;
 }
+
+//Multiplicação para o segundo array (captção do dígito 2)
 function multiplicarA2(v2) {
     const multiplicarA2 = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2];
     const arrayMultiplicacaoDigit2 = []
@@ -36,23 +43,29 @@ function multiplicarA2(v2) {
     return arrayMultiplicacaoDigit2;
 }
 
+//Fórmula matemática do próprio problema, onde a soma de todos os produtos
+//deve ser multiplicada por 10, e com esse valor retirar o módulo por 11
 function valorFormulaMatematica(soma) {
     const valor = ((Number(soma) * 10) % 11);
-    if (valor > 9) return valor = '0';
+    if (valor > 9) return valor = '0';//Se o resultado da fórmula maior que 9, retorne '0'
     const valorString = valor.toString()
     return (valorString);
 }
 
+//Função principal de validação de CPF
 function validaCpf(cpf) {
-    const div = document.querySelector('.answer');
+    const div = document.querySelector('.answer');//Selecionando DIV que mostrará resultado
 
     const cpfLimpo = cpf.replace([/\D+/g, '-', '.'], '');//Removendo todo caractere que não é um número
-    const input = document.getElementById('cpf');
-    if (cpfLimpo.length !== 11) {
+    const input = document.getElementById('cpf');//Selecionando input que será inserido o valor CPF
+
+    if (cpfLimpo.length !== 11) {//Se o comprimento de 'cpfLimpo' = 11, limpar o input e dar return
         input.value = ''
         return alert("Use no máximo 11 números");
     }
-    if (typeof Number(cpfLimpo) !== 'number') return mostrarDiv(div, `O CPF: ${cpf} é inválido`);
+
+    if (typeof Number(cpfLimpo) !== 'number') return mostrarDiv(div, `O CPF: ${cpf} é inválido`);//Se 'cpfLimpo' diferente de Number, dar return
+    
     //Verificação para números repetidos
     const numerosRepetidos = [
         '00000000000',
@@ -65,51 +78,59 @@ function validaCpf(cpf) {
         '77777777777',
         '88888888888',
         '99999999999'];
-    for (let r = 0; r <= 9; r++) {
+    for (let r = 0; r <= 9; r++) {//Checando se 'cpfLimpo' é igual a qualquer índice do array 'numerosRepetidos'
         if (cpfLimpo == numerosRepetidos[r]) return mostrarDiv(div, `O CPF: ${cpf} é inválido`)
     }
 
-    const arrayComNumerosColetados = cpfLimpo.split('')
-    const arrayComNumMultiplicados1 = multiplicarA1(array9num(cpf));
+    const arrayComNumerosColetados = cpfLimpo.split('')//Transformando string do cpf para array, onde cada numero é um índice
+    const arrayComNumMultiplicados1 = multiplicarA1(array9num(cpf));//Const 'arrayComNumMultiplicados1' recebe um Array com 
+    //o conteúdo do parâmetro 'cpf' que está sendo executado por 'array9num' e o valor que for retornado passa por 'multiplicarA1'
 
     const somaaArrayComNumMultiplicados1 = arrayComNumMultiplicados1.reduce(function (acumulador, valor) {
-        acumulador = acumulador + valor;
+        acumulador = acumulador + valor;//Somando todos os valores do array 'arrayComNumMultiplicados1' e jogando na const 'somaaArrayComNumMultiplicados1'
         return acumulador;
     });
 
-    const valorFormula1 = valorFormulaMatematica(somaaArrayComNumMultiplicados1);
+    const valorFormula1 = valorFormulaMatematica(somaaArrayComNumMultiplicados1);//Valor do dígito 1
 
-    const arrayNewTest = [...fazendoSlice(cpf), valorFormula1.toString()];
-    const primeiroDigitCpf = arrayComNumerosColetados[9]
-    if (primeiroDigitCpf !== valorFormula1) return mostrarDiv(div, `O CPF: ${cpf} tem o dígito 1 inválido`)
+    const arrayNewTest = [...fazendoSlice(cpf), valorFormula1.toString()];/*Criando array que será  usado como comparador ao final do processo vou comparar os 
+    valores coletados pela string, e os valores que o programa me retorna como dígito*/
 
-    const arrayComMultiplicacados2 = (multiplicarA2(arrayNewTest));
+    const primeiroDigitCpf = arrayComNumerosColetados[9]//Capta o valor do index 9 da string inicial
+    if (primeiroDigitCpf !== valorFormula1) return mostrarDiv(div, `O CPF: ${cpf} tem o dígito 1 inválido`)/*Se o valor do index 9 da string inicial é diferente
+    do valor que o programa me retornou como dígito 1, return*/
+
+    const arrayComMultiplicacados2 = (multiplicarA2(arrayNewTest));/* Captando os valores que serão multiplicados do array que está com o dígito 1 e os 9 demais
+    números e jogando na cosnt 'arrayComMultiplicacados2' (array) */
     const somaaArrayComNumMultiplicados2 = arrayComMultiplicacados2.reduce(function (acumulador, valor) {
-        acumulador = acumulador + valor;
+        acumulador = acumulador + valor;//Somando todos valores dentro do array 'arrayComMultiplicacados2'
         return acumulador;
     });
-    const valorFormula2 = valorFormulaMatematica(somaaArrayComNumMultiplicados2);
 
-    const segundoDigitCpf = arrayComNumerosColetados[10]
-    if (segundoDigitCpf !== valorFormula2) return mostrarDiv(div, `O CPF: ${cpf} tem o dígito 2 inválido`);
+    const valorFormula2 = valorFormulaMatematica(somaaArrayComNumMultiplicados2);//Dígito 2
 
-    mostrarDiv(div, `O CPF: ${cpf} foi validado e pode ser usado`);
+    const segundoDigitCpf = arrayComNumerosColetados[10]//Captando valor do index 10 do string inicial
+    if (segundoDigitCpf !== valorFormula2) return mostrarDiv(div, `O CPF: ${cpf} tem o dígito 2 inválido`);/* Se o valor do index 10 do string inicial é diferente
+    do dígito 2 que o programa me retornou, return */
+
+    mostrarDiv(div, `O CPF: ${cpf} foi validado e pode ser usado`);//Caso nenhuma dessas restrições acima sejam ativadas, o CPF é válido 
 }
 
+//Função para escrever no HTML
 function mostrarDiv(div, texto) {
     div.style.display = "flex";
     div.innerHTML = texto;
 }
 
+//Função para não atualizar a página quando eu der um 'submit' no form
 function naoAtt() {
-    const captcaoDados = document.querySelector('.form');
-    const cpf = captcaoDados.querySelector('#cpf');
+    const captcaoDados = document.querySelector('.form');//Form
+    const cpf = captcaoDados.querySelector('#cpf');//Input
 
-
-    function recebeEventoForm(e) {
+    function recebeEventoForm(e) {//Função para não dar refresh
         e.preventDefault();
     }
-    captcaoDados.addEventListener('submit', recebeEventoForm);
+    captcaoDados.addEventListener('submit', recebeEventoForm);//Quando submit for enviado, ativar 'recebeEventoForm'
 
-    validaCpf(cpf.value)
+    validaCpf(cpf.value)//Ativando função 'validaCpf' quando submit for enviado, enviando parâmetro do valor que está inserido no input
 }
