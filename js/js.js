@@ -52,6 +52,10 @@ function valorFormulaMatematica(soma) {
     return (valorString);
 }
 
+function sequenciaNumeros(cpf){
+    return(cpf.charAt(0).repeat(11) === cpf);
+}
+
 //Função principal de validação de CPF
 function validaCpf(cpf) {
     const div = document.querySelector('.answer');//Selecionando DIV que mostrará resultado
@@ -67,20 +71,7 @@ function validaCpf(cpf) {
     if (typeof Number(cpfLimpo) !== 'number') return mostrarDiv(div, `O CPF: ${cpf} é inválido`);//Se 'cpfLimpo' diferente de Number, dar return
     
     //Verificação para números repetidos
-    const numerosRepetidos = [
-        '00000000000',
-        '11111111111',
-        '22222222222',
-        '33333333333',
-        '44444444444',
-        '55555555555',
-        '66666666666',
-        '77777777777',
-        '88888888888',
-        '99999999999'];
-    for (let r = 0; r <= 9; r++) {//Checando se 'cpfLimpo' é igual a qualquer índice do array 'numerosRepetidos'
-        if (cpfLimpo == numerosRepetidos[r]) return mostrarDiv(div, `O CPF: ${cpf} é inválido`)
-    }
+    if(sequenciaNumeros(cpfLimpo, div)) return mostrarDiv(div, `O CPF: ${cpf} é inválido`);
 
     const arrayComNumerosColetados = cpfLimpo.split('')//Transformando string do cpf para array, onde cada numero é um índice
     const arrayComNumMultiplicados1 = multiplicarA1(array9num(cpf));//Const 'arrayComNumMultiplicados1' recebe um Array com 
